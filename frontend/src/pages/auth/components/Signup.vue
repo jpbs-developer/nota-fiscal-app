@@ -4,14 +4,11 @@
       <img :src="logo" alt="Logo" class="h-8 w-8" />
     </div>
 
-
-
     <h2 class="text-2xl font-bold text-gray-900 mb-1">Sign up</h2>
     <p class="text-sm text-gray-500 mb-4">
       Already have an account?
       <router-link to="/login" class="text-blue-600 hover:underline">Sign in</router-link>
     </p>
-
 
     <p v-if="error" class="text-red-600 text-sm bg-red-200 p-3 rounded-lg mb-3">{{ error }}</p>
     <div class="mb-4">
@@ -51,7 +48,7 @@
         <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
       </label>
     </div>
-    
+
     <button
       type="submit"
       :disabled="!isFormValid"

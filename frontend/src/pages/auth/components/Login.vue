@@ -12,6 +12,7 @@
           <routerLink to="/signup"><a href="#" class="text-blue-600 hover:underline">Sign up</a></routerLink>
         </p>
 
+        <p v-if="error" class="text-red-600 text-sm bg-red-200 p-3 rounded-lg mb-3">{{ error }}</p>
         <form @submit.prevent="handleLogin">
           <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700">Email address*</label>
@@ -63,7 +64,8 @@
 
 <script setup lang="ts">
   import vueLogo from '@/assets/vue.svg'
-  import { computed, reactive } from 'vue'
+  import { computed, reactive, ref } from 'vue'
+  import { login } from '../services/auth'
 
   const form = reactive({
     email: '',
@@ -71,10 +73,23 @@
     rememberMe: false,
     showPassword: false,
   })
+  const error = ref('')
+  const loading = ref(false)
 
   const isFormValid = computed(() => form.email.trim() && form.password.trim())
 
-  const handleLogin = () => {
-    console.log('Login')
+  const handleLogin = async () => {
+    try {
+      loading.value = true
+      error.value = ''
+      const { email, password } = form
+      const { token, user } = await login({ email, password })
+
+      console.log(token)
+    } catch (err: any) {
+      error.value = err.response?.data?.message || 'Erro ao fazer login'
+    } finally {
+      loading.value = false
+    }
   }
 </script>
