@@ -1,5 +1,5 @@
-import axios from 'axios'
 import type { User } from '../../../models/User'
+import api from '../../../services/api'
 
 const API_URL = 'http://localhost:3333'
 
@@ -16,11 +16,11 @@ export type LoginPayload = {
 }
 
 export async function signup(payload: SignupPayload) {
-  const response = await axios.post(`${API_URL}/auth/signup`, payload)
+  const response = await api.post(`/auth/signup`, payload)
   return response.data
 }
 
 export async function login(payload: LoginPayload) {
-  const response = await axios.post<{ token: string; user: User }>(`${API_URL}/auth/login`, payload)
+  const response = await api.post<{ token: string; user: User }>(`/auth/login`, payload)
   return response.data
 }

@@ -66,10 +66,11 @@
   import vueLogo from '@/assets/vue.svg'
   import { computed, reactive, ref } from 'vue'
   import { login } from '../services/auth'
-
+  import { useRouter } from 'vue-router'
+  const router = useRouter()
   const form = reactive({
-    email: '',
-    password: '',
+    email: 'jpbs2@email.com',
+    password: 'Admin@1234',
     rememberMe: false,
     showPassword: false,
   })
@@ -84,8 +85,9 @@
       error.value = ''
       const { email, password } = form
       const { token, user } = await login({ email, password })
+      localStorage.setItem('authToken', token)
 
-      console.log(token)
+      router.push({ name: 'clients' })
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Erro ao fazer login'
     } finally {
