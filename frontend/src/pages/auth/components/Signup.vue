@@ -4,12 +4,16 @@
       <img :src="logo" alt="Logo" class="h-8 w-8" />
     </div>
 
+
+
     <h2 class="text-2xl font-bold text-gray-900 mb-1">Sign up</h2>
     <p class="text-sm text-gray-500 mb-4">
       Already have an account?
       <router-link to="/login" class="text-blue-600 hover:underline">Sign in</router-link>
     </p>
 
+
+    <p v-if="error" class="text-red-600 text-sm bg-red-200 p-3 rounded-lg mb-3">{{ error }}</p>
     <div class="mb-4">
       <label class="block text-sm font-medium text-gray-700">Full name*</label>
       <input v-model="form.fullName" type="text" class="mt-1 w-full border rounded px-3 py-2" required />
@@ -47,21 +51,24 @@
         <a href="#" class="text-blue-600 hover:underline">Privacy Policy</a>
       </label>
     </div>
-
+    
     <button
       type="submit"
       :disabled="!isFormValid"
       class="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 disabled:opacity-50"
     >
-      Create your free account
+      {{ loading ? 'Criando conta...' : 'Criar conta' }}
     </button>
   </form>
 </template>
 
 <script setup lang="ts">
   import logo from '@/assets/vue.svg'
-  import { computed, reactive } from 'vue'
+  import { computed, reactive, ref } from 'vue'
+  import { signup } from '../services/auth'
+  import { useRouter } from 'vue-router'
 
+  const router = useRouter()
   const form = reactive({
     fullName: '',
     email: '',
@@ -70,6 +77,8 @@
     showPassword: false,
     termsAccepted: true,
   })
+  const error = ref('')
+  const loading = ref(false)
 
   function isEmailValid(email: string) {
     return email.includes('@') && email.includes('.')
@@ -83,7 +92,16 @@
     return isNameValid && isEmailValid(form.email) && isPasswordValid && isTermsAccepted && isCompanyValid
   })
 
-  const handleSignup = () => {
-    console.log('Signup')
+  const handleSignup = async () => {
+    try {
+      loading.value = true
+      error.value = ''
+      await signup(form)
+      router.push('/login')
+    } catch (err: any) {
+      error.value = err.response?.data?.message || 'Erro ao criar conta'
+    } finally {
+      loading.value = false
+    }
   }
 </script>

@@ -1,14 +1,14 @@
 import fastify from 'fastify';
-import authRoutes from './routes/auth.routes';
+import cors from '@fastify/cors';
 
-const app = fastify();
-
-app
-  .listen({
-    port: 3333,
-  })
-  .then(() => {
-    console.log('Server is running on port 3333');
+async function buildApp() {
+  const app = fastify();
+  await app.register(cors, {
+    origin: '*',
+    credentials: true,
   });
 
-export default app;
+  return app;
+}
+
+export default buildApp;
