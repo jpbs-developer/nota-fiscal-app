@@ -12,9 +12,9 @@
     <table class="min-w-full text-sm text-left">
       <thead class="bg-gray-100">
         <tr>
-          <th class="p-3 cursor-pointer" @click="sortBy('name')">
+          <th class="p-3 cursor-pointer" @click="sortBy('fullName')">
             Nome
-            <span v-if="sortKey === 'name'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
+            <span v-if="sortKey === 'fullName'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span>
           </th>
           <th class="p-3">Tipo</th>
           <th class="p-3">CPF/CNPJ</th>
@@ -28,7 +28,7 @@
       </thead>
       <tbody>
         <tr v-for="client in paginatedClients" :key="client.id" class="border-b hover:bg-gray-50">
-          <td class="p-3">{{ client.name }}</td>
+          <td class="p-3">{{ client.fullName }}</td>
           <td class="p-3">{{ client.type }}</td>
           <td class="p-3">{{ formatDocument(client.document) }}</td>
           <td class="p-3">{{ client.email }}</td>
@@ -55,27 +55,11 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { ref, computed } from 'vue'
+  import { ref, computed, watch, onMounted } from 'vue'
   import type { Client } from '../../../../../models/User'
+  import { retriveClients } from '../client.api'
 
-  const clients = ref<Client[]>([
-    {
-      id: '1',
-      name: 'Ana Patrícia Ramos',
-      type: 'Pessoa Física',
-      document: '12345678900',
-      email: 'ana@email.com',
-      createdAt: '2025-03-15',
-    },
-    {
-      id: '2',
-      name: 'Clínica AnimalVet',
-      type: 'Pessoa Jurídica',
-      document: '12345678000199',
-      email: 'contato@animalvet.com',
-      createdAt: '2025-02-01',
-    },
-  ])
+  const clients = ref<Client[]>([])
 
   const currentPage = ref(1)
   const pageSize = 10
@@ -94,6 +78,11 @@
     const start = (currentPage.value - 1) * pageSize
     return sortedClients.value.slice(start, start + pageSize)
   })
+
+  async function fetchClients() {
+    const response = await retriveClients()
+    clients.value = response
+  }
 
   const totalPages = computed(() => Math.ceil(clients.value.length / pageSize))
 
@@ -123,6 +112,10 @@
 
     return value
   }
+
+  onMounted(async () => {
+    await fetchClients()
+  })
 </script>
 
 <style scoped></style>

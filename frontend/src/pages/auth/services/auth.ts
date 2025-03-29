@@ -1,8 +1,6 @@
 import type { User } from '../../../models/User'
 import api from '../../../services/api'
 
-const API_URL = 'http://localhost:3333'
-
 export type SignupPayload = {
   fullName: string
   email: string

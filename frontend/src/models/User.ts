@@ -7,8 +7,8 @@ export type User = {
 
 export type Client = {
   id: string
-  name: string
-  type: 'Pessoa Física' | 'Pessoa Jurídica'
+  fullName: string
+  type: 'FISIC' | 'JURIDIC'
   document: string
   email: string
   createdAt: string

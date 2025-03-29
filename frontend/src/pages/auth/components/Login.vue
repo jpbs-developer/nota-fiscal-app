@@ -84,11 +84,11 @@
       loading.value = true
       error.value = ''
       const { email, password } = form
-      const { token, user } = await login({ email, password })
+      const { token } = await login({ email, password })
       localStorage.setItem('authToken', token)
-
-      router.push({ name: 'clients' })
+      router.push({ name: 'clients-list' })
     } catch (err: any) {
+      console.log(err)
       error.value = err.response?.data?.message || 'Erro ao fazer login'
     } finally {
       loading.value = false

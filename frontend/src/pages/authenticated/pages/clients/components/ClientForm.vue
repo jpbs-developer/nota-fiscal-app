@@ -8,15 +8,15 @@
       <!-- Nome -->
       <div class="col-span-2">
         <label class="block text-sm font-medium text-gray-700">Nome completo</label>
-        <input type="text" v-model="form.name" class="mt-1 block p-3 w-full rounded border-gray-300 border" required />
+        <input type="text" v-model="form.fullName" class="mt-1 block p-3 w-full rounded border-gray-300 border" required />
       </div>
 
       <!-- Tipo -->
       <div>
         <label class="block text-sm font-medium text-gray-700">Tipo</label>
         <select v-model="form.type" class="mt-1 block p-3 w-full rounded border-gray-300 border">
-          <option value="Pessoa Física">Pessoa Física</option>
-          <option value="Pessoa Jurídica">Pessoa Jurídica</option>
+          <option value="FISIC">Pessoa Física</option>
+          <option value="JURIDIC">Pessoa Jurídica</option>
         </select>
       </div>
 
@@ -26,7 +26,7 @@
         <input
           type="text"
           v-model="form.document"
-          v-maska="form.type === 'Pessoa Física' ? '###.###.###-##' : '##.###.###/####-##'"
+          v-maska="form.type === 'FISIC' ? '###.###.###-##' : '##.###.###/####-##'"
           class="mt-1 block p-3 w-full rounded border-gray-300 border"
           required
         />
@@ -57,10 +57,11 @@
 <script setup lang="ts">
   import { ref, watch } from 'vue'
   import { useRoute } from 'vue-router'
+  import { createClient } from '../client.api'
 
   interface ClientForm {
-    name: string
-    type: 'Pessoa Física' | 'Pessoa Jurídica'
+    fullName: string
+    type: 'FISIC' | 'JURIDIC'
     document: string
     email: string
     phone: string
@@ -69,8 +70,8 @@
   const route = useRoute()
   const isEditMode = ref(false)
   const form = ref<ClientForm>({
-    name: '',
-    type: 'Pessoa Física',
+    fullName: '',
+    type: 'FISIC',
     document: '',
     email: '',
     phone: '',
@@ -88,19 +89,20 @@
     { immediate: true }
   )
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (isEditMode.value) {
       console.log('Atualizando cliente:', form.value)
     } else {
-      console.log('Cadastrando cliente:', form.value)
+      await createClient(form.value)
       clearForm()
+      alert('Cliente cadastrado com sucesso!')
     }
   }
 
   function clearForm() {
     form.value = {
-      name: '',
-      type: 'Pessoa Física',
+      fullName: '',
+      type: 'FISIC',
       document: '',
       email: '',
       phone: '',

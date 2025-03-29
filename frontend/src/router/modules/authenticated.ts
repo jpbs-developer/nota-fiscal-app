@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
 import Authenticated from '../../pages/authenticated/Authenticated.vue'
-import Clients from '../../pages/authenticated/pages/clients/Clients.vue'
 import clientRoutes from '../../pages/authenticated/pages/clients/clientsRoutes'
 
 
