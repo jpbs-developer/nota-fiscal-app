@@ -31,6 +31,7 @@ export default async function authRoutes(app: FastifyInstance) {
         sub: user.id,
         email: user.email,
         fullName: user.fullName,
+        userId: user.id,
       },
       env.JWT_SECRET,
       {

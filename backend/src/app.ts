@@ -1,5 +1,6 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
+import verifyJwt from './middleware/verify-jwt';
 
 async function buildApp() {
   const app = fastify();
@@ -7,7 +8,7 @@ async function buildApp() {
     origin: '*',
     credentials: true,
   });
-
+  await app.register(verifyJwt);
   return app;
 }
 
