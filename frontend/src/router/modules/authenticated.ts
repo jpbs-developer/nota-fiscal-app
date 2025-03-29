@@ -1,6 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
 import Authenticated from '../../pages/authenticated/Authenticated.vue'
-import Clients from '../../pages/authenticated/pages/Clients.vue'
+import Clients from '../../pages/authenticated/pages/clients/Clients.vue'
+import clientRoutes from '../../pages/authenticated/pages/clients/clientsRoutes'
+
 
 const autenticatedRoutes: RouteRecordRaw = {
   path: '/authenticated',
@@ -8,7 +10,7 @@ const autenticatedRoutes: RouteRecordRaw = {
   meta: { requiresAuth: true },
   children: [
     { path: '', redirect: 'clients' },
-    { path: 'clients', component: Clients, name: 'clients' },
+    clientRoutes
   ],
 }
 

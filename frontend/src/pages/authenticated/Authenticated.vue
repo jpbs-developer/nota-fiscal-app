@@ -7,7 +7,7 @@
       </div>
 
       <nav class="flex-1 px-4 py-6 space-y-2">
-        <router-link to="clients" class="flex items-center gap-3 px-4 py-2 rounded hover:bg-white/10" active-class="bg-white/10">
+        <router-link  to="/authenticated/clients" class="flex items-center gap-3 px-4 py-2 rounded hover:bg-white/10" active-class="bg-white/10">
           <i class="fas fa-users"></i>
           <span>Clientes</span>
         </router-link>
